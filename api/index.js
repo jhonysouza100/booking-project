@@ -1,11 +1,11 @@
-import express from 'express';
-import { config } from 'dotenv';
-import authRoute from './routes/auth.js';
-import usersRoute from './routes/auth.js';
-import hotelsRoute from './routes/auth.js';
-import roomsRoute from './routes/auth.js';
-import mongoose from 'mongoose';
-config();
+import express from "express";
+import hotelsRoute from "./src/routes/hotels.js";
+import roomsRoute from "./src/routes/rooms.js";
+import usersRoute from "./src/routes/users.js";
+import authRoute from "./src/routes/auth.js";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const connect = async () => {
   try {
@@ -18,13 +18,29 @@ const connect = async () => {
 
 const app = express();
 
+
 // middlewares
-app.use('api/auth', authRoute);
-app.use('api/users', usersRoute);
-app.use('api/hotels', hotelsRoute);
-app.use('api/rooms', roomsRoute);
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
+
+app.use("/api/hotels", hotelsRoute);
+app.use("/api/rooms", roomsRoute);
+app.use("/api/users", usersRoute);
+app.use("/api/auth", authRoute);
+
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Somethind went wrong";
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack
+  });
+});
 
 app.listen(8080, () => {
-  // connect();
+  connect();
   console.log("Connect to backend!");
 });
