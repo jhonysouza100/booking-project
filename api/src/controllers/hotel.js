@@ -1,4 +1,4 @@
-import Hotel from '../src/models/Hotel.js';
+import Hotel from '../models/Hotel.js';
 
 export const CreateHotel = async (req, res, next) => {
   const newHotel = new Hotel(req.body);
@@ -42,18 +42,20 @@ export const GetHotel = async (req, res, next) => {
 }
 
 export const GetAllHotels = async (req, res, next) => {
-  const { min, max, ...others } = req.query;
+  const { min, max, limit, ...others } = req.query;
+  
   try {
     const hotels = await Hotel.find({
       ...others,
-      cheapestPrice: { $gt: min | 1, $lt: max || 999 },
-    }).limit(req.query.limit);
-    console.log(hotels)
+      cheapestPrice: { $gt: min || 1, $lt: max || 999 },
+    }).limit(parseInt(limit) || 0); // Convierte limit a un número entero
+
     res.status(200).json(hotels);
   } catch (error) {
     next(error);
   }
 }
+
 
 export const CountByCity = async (req, res, next) => {
   const cities = req.query.cities.split(",");

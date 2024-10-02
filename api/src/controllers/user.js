@@ -1,4 +1,4 @@
-import User from '../src/models/User.js';
+import User from '../models/User.js';
 
 export const UpdateUser = async (req, res, next) => {
   try {
