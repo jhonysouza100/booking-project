@@ -56,6 +56,7 @@ const Hotel = () => {
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const handleClick = () => {
     if(user) {
       setOpenModal(true);
@@ -143,7 +144,7 @@ const Hotel = () => {
       </div>
       )}
 
-      {openModal && <ReserveModal setOpen={openModal} hotelId={pathId} />}
+      {openModal && (<ReserveModal setOpen={setOpenModal} hotelId={pathId} />)}
     </div>
   );
 };
