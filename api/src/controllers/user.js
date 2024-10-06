@@ -1,5 +1,17 @@
 import User from '../models/User.js';
 
+
+export const CreateUser = async (req, res, next) => {
+  const newUser = new User(req.body);
+
+  try {
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const UpdateUser = async (req, res, next) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -9,7 +21,7 @@ export const UpdateUser = async (req, res, next) => {
     );
     res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 }
 
@@ -20,7 +32,7 @@ export const DeleteUser = async (req, res) => {
     );
     res.status(200).json(`User id: ${req.params.id} has been deleted`);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 }
 

@@ -25,7 +25,7 @@ function Login() {
     navigate("/");
     try {
       const res = await axios.post(`http://localhost:8080/api/auth/login`, credential);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: res.data.details });
     } catch (error) {
       dispatch({ type: 'LOGIN_FAILURE', payload: error.response.data });
     }

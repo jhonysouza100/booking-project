@@ -1,5 +1,5 @@
 import express from 'express';
-import { DeleteUser, GetAllUsers, GetUser, UpdateUser } from '../controllers/user.js';
+import { CreateUser, DeleteUser, GetAllUsers, GetUser, UpdateUser } from '../controllers/user.js';
 import { verifyAdmin, verifyToken, verifyUser } from '../utils/verifyToken.js';
 
 const router = express.Router();
@@ -16,6 +16,7 @@ router.get("/checkadmin/:id" , verifyAdmin, (req, res, next) => {
   res.send("Hello admin, your are logged in and you can delete all accounts");
 });
 
+router.post("/", verifyUser, CreateUser);
 // UPDATE
 router.put("/:id", verifyUser, UpdateUser);
 // DELETE
